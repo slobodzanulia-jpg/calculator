@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Деньги и чувства: карта доходов и расходов — Юлия Слободзян</title>
+<meta name="description" content="Посмотрите, куда уходят ваши деньги и с какими чувствами. Карта доходов, расходов и денежных эмоций с сохранением в Word или PDF.">
+<meta name="color-scheme" content="only light">
+<meta name="theme-color" content="#F4F5F7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== Цвета и шрифты: при необходимости поменяйте под сайт ===== */
+:root{
+  color-scheme: light only;
+  --bg:#F4F5F7;        /* фон страницы */
+  --surface:#F7F3EF;   /* карточки */
+  --ink:#3A3538;       /* основной текст */
+  --muted:#6B6468;     /* второстепенный текст */
+  --line:#E0E2E5;      /* линии и рамки */
+  --field:#FFFFFF;     /* поля ввода */
+  --free:#5F7D5A;      /* приятные чувства, «хорошо» */
+  --free-soft:#E6ECDF;
+  --mid:#A8762A;       /* «терпимо», качели */
+  --mid-soft:#F4E6CC;
+  --debt:#A53A45;      /* неприятные чувства, «требует внимания» */
+  --debt-soft:#F6EEEC;
+  --calm:#7A6C93;      /* утешение */
+  --calm-soft:#ECE7F2;
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:Manrope,system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-text-size-adjust:100%}
+.wrap{max-width:640px;margin:0 auto;padding:28px 16px 56px}
+.top{font-family:var(--serif);font-size:32px;line-height:1.1;font-weight:600;margin:0 4px 8px}
+.top em{font-style:italic;font-weight:500;color:var(--muted)}
+.lead{font-size:15px;line-height:1.6;color:var(--muted);margin:0 4px 6px;max-width:60ch}
+.wave{display:block;width:100%;height:28px;margin:6px 0 18px}
+.wave path{fill:none;stroke:var(--line);stroke-width:1.5}
+.hero{padding:0 4px 24px}
+.hero .say{font-family:var(--serif);font-size:27px;line-height:1.3;font-weight:500;margin:0 0 16px}
+.hero .say i{font-weight:600}
+.strip{display:flex;height:16px;border-radius:999px;overflow:hidden;background:var(--line);margin-bottom:8px}
+.strip span{display:block;height:100%}
+.keys{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);margin-bottom:16px}
+.keys i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
+.strip-label{font-size:13px;color:var(--muted);margin:0 0 6px;font-weight:600}
+.sec{background:var(--surface);border-radius:24px;padding:20px 18px;margin-bottom:14px;border:1px solid var(--line)}
+.sec h2{font-family:var(--serif);font-size:26px;line-height:1.15;font-weight:600;margin:0 0 6px}
+.sec h2 em{font-style:italic;font-weight:500;color:var(--muted)}
+.sec h3{font-size:15px;margin:0 0 4px}
+.hint{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.55}
+.row{display:flex;gap:10px}
+.row>*{flex:1;min-width:0}
+label.f{display:block;font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:10px}
+label.f input{display:block;width:100%;margin-top:4px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:600 16px var(--sans)}
+input:focus{outline:2px solid var(--free);outline-offset:1px}
+.item{padding:8px 0 10px;border-bottom:1px solid var(--line)}
+.l1{display:flex;align-items:center;gap:6px}
+.l1 .nm{flex:1;min-width:0;border:none;background:transparent;color:var(--ink);font:600 15px var(--sans);padding:6px 0}
+.l1 .amt{width:108px;padding:9px 10px;border-radius:12px;border:1px solid var(--line);background:var(--field);color:var(--ink);font:600 15px var(--sans);text-align:right}
+.l2{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px}
+.loan-row{display:flex;gap:8px;margin-top:6px}
+.loan-row label.f{flex:1;margin-bottom:0}
+.btn{border:none;border-radius:999px;padding:13px 18px;font:700 15px var(--sans);cursor:pointer;width:100%;text-decoration:none;display:block;text-align:center}
+.btn:focus-visible,.tag:focus-visible,.emo-btn:focus-visible,.chip:focus-visible{outline:3px solid var(--free);outline-offset:2px}
+.btn-main{background:var(--ink);color:var(--surface)}
+.btn-ghost{background:var(--field);color:var(--ink)}
+.btn-x{background:transparent;color:var(--muted);padding:6px 8px;font-size:20px;width:auto}
+.btns{display:flex;flex-direction:column;gap:8px}
+.tag{border:none;border-radius:999px;padding:6px 10px;font:600 12px var(--sans);cursor:pointer;white-space:nowrap}
+.tag.must{background:var(--field);color:var(--muted)}
+.tag.opt{background:var(--mid-soft);color:var(--mid)}
+.emo-btn{border:1px dashed var(--line);background:transparent;border-radius:999px;padding:5px 11px;font:600 12.5px var(--sans);color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap}
+.emo-btn.has{border-style:solid;background:var(--surface);color:var(--ink)}
+.emo-btn .ar{color:var(--muted);font-weight:500}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
+.v1{background:var(--free)} .v0{background:#B9A99C} .v-1{background:var(--debt)}
+.total{display:flex;justify-content:space-between;padding:10px 0 2px;font-size:14px;color:var(--muted)}
+.total b{color:var(--ink)}
+.gap{height:12px}
+.good,.warn,.note{border-radius:16px;padding:12px 14px;font-size:14px;line-height:1.5;font-weight:600}
+.good{background:var(--free-soft);color:var(--free)}
+.warn{background:var(--debt-soft);color:var(--debt)}
+.note{background:var(--mid-soft);color:var(--mid)}
+.met{border-bottom:1px solid var(--line)}
+.met:last-child{border-bottom:none}
+.met summary{display:flex;align-items:center;gap:10px;padding:12px 0;cursor:pointer;list-style:none;font-size:14.5px}
+.met summary::-webkit-details-marker{display:none}
+.met .mn{flex:1}
+.met .md{width:10px;height:10px;border-radius:50%;flex:none}
+.met.ok .md{background:var(--free)} .met.ok b{color:var(--free)}
+.met.mid .md{background:var(--mid)} .met.mid b{color:var(--mid)}
+.met.bad .md{background:var(--debt)} .met.bad b{color:var(--debt)}
+.met p{margin:0 0 8px 20px;font-size:13.5px;line-height:1.55}
+.met p.norm{color:var(--muted);margin-bottom:12px}
+.pat{border-radius:18px;padding:14px 16px;margin-bottom:10px}
+.pat .ph{display:flex;flex-direction:column;gap:2px}
+.pat h3{font-family:var(--serif);font-size:21px;font-weight:600;margin:0}
+.pat .sum{font-weight:700;font-size:13.5px}
+.pat .cats{font-size:13px;margin:4px 0 8px;opacity:.85}
+.pat p{font-size:14px;line-height:1.55;margin:0 0 8px;color:var(--ink)}
+.pat ul{margin:0;padding-left:18px}
+.pat li{font-size:14px;line-height:1.55;margin-bottom:4px;color:var(--ink);font-style:italic}
+.p-swing{background:var(--mid-soft)} .p-swing h3,.p-swing .sum{color:var(--mid)}
+.p-comfort{background:var(--calm-soft)} .p-comfort h3,.p-comfort .sum{color:var(--calm)}
+.p-heavy{background:var(--debt-soft)} .p-heavy h3,.p-heavy .sum{color:var(--debt)}
+.p-ok{background:var(--free-soft)} .p-ok h3,.p-ok .sum{color:var(--free)}
+.p-neutral{background:var(--field)} .p-neutral h3,.p-neutral .sum{color:var(--muted)}
+.freq{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 14px}
+.freq>span{background:var(--field);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.recs{margin:0;padding-left:20px}
+.recs li{font-size:14.5px;line-height:1.6;margin-bottom:10px}
+.care{background:var(--ink);color:var(--surface);border:none}
+.care h2{color:var(--surface)}
+.care h2 em{color:#CDBFB3}
+.care p{font-size:15px;line-height:1.6;margin:0 0 16px;color:#E9DFD5}
+.care .btn-main{background:var(--surface);color:var(--ink)}
+.care .btn-ghost{background:transparent;color:var(--surface);border:1px solid #6B5C54}
+.foot{font-size:12px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.6}
+.hidden{display:none!important}
+/* Окно выбора чувств */
+.ov{position:fixed;inset:0;background:rgba(47,38,34,.35);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:640px;border-radius:24px 24px 0 0;padding:20px 18px calc(18px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
+.sheet h2{font-family:var(--serif);font-size:24px;margin:0 0 4px;font-weight:600}
+.sheet .for{font-size:13px;color:var(--muted);margin:0 0 14px}
+.chain{display:flex;align-items:center;flex-wrap:wrap;gap:6px;min-height:44px;padding:10px 12px;border-radius:14px;background:var(--field);margin-bottom:6px;font-weight:700;font-size:15px}
+.chain .ph{color:var(--muted);font-weight:500;font-size:13.5px}
+.chain .ar{color:var(--muted);font-weight:500}
+.steps{font-size:12.5px;color:var(--muted);margin:0 0 14px;line-height:1.5}
+.grp{font-size:12.5px;font-weight:700;color:var(--muted);margin:10px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 13px;font:600 14px var(--sans);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip:active{transform:scale(.97)}
+.sheet .row{margin-top:18px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<p style="max-width:1100px;margin:0 auto;padding:16px 20px 0;font:500 .92rem Manrope,system-ui,sans-serif"><a href="index.html" style="color:#A53A45;text-decoration:none">← На главную</a></p>
+<div class="wrap">
+  <div class="top">Деньги <em>и чувства</em></div>
+  <p class="lead">Карта ваших доходов и расходов — и того, что вы при этом чувствуете. Рядом с каждой суммой можно отметить цепочку эмоций: что было до, во время и после. Так становится видно, где деньги дают опору, а где — уходят вместе с тревогой или виной.</p>
+  <p class="lead" style="font-size:13.5px;margin-top:10px">🔒 Всё, что вы вводите, остаётся только на вашем устройстве: данные никуда не отправляются и никто, кроме вас, их не видит. Если пользуетесь чужим компьютером, в конце нажмите «Очистить все данные».</p>
+  <svg class="wave" viewBox="0 0 600 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 14 C 50 2, 100 26, 150 14 S 250 2, 300 14 S 400 26, 450 14 S 550 2, 600 14"/></svg>
+
+  <div class="hero" id="hero"></div>
+
+  <section class="sec">
+    <h2>Доходы</h2>
+    <p class="hint">Все деньги за месяц: зарплата, подработка, пособия, помощь близких. Нажмите «чувства», чтобы отметить, что вы испытываете, когда получаете эти деньги.</p>
+    <div id="incomes"></div>
+    <div class="total"><span>Итого доход</span><b id="incomeTotal">0 ₽</b></div>
+    <div class="gap"></div>
+    <button class="btn btn-ghost" data-action="add" data-list="incomes">Добавить доход</button>
+  </section>
+
+  <section class="sec">
+    <h2>Расходы</h2>
+    <p class="hint">Метка «нужно» или «можно меньше» — нажмите, чтобы переключить. В «чувствах» отметьте цепочку: например, «радость → вина», если покупка сначала радует, а потом становится не по себе.</p>
+    <div id="expenses"></div>
+    <div class="total"><span>Обязательные</span><b id="essTotal">0 ₽</b></div>
+    <div class="total"><span>Необязательные</span><b id="optTotal">0 ₽</b></div>
+    <div class="gap"></div>
+    <button class="btn btn-ghost" data-action="add" data-list="expenses">Добавить расход</button>
+  </section>
+
+  <section class="sec">
+    <h2>Кредиты <em>и долги</em></h2>
+    <p class="hint">Если их нет — пропустите. Ежемесячные платежи учитываются в общей картине.</p>
+    <div id="loans"></div>
+    <div class="gap"></div>
+    <button class="btn btn-ghost" data-action="add" data-list="loans">Добавить кредит</button>
+    <div id="loanMsg" style="margin-top:12px"></div>
+  </section>
+
+  <section class="sec">
+    <h2>Накопления</h2>
+    <label class="f">
+      Сколько отложено на случай непредвиденного, ₽
+      <input inputmode="numeric" data-key="savings" id="savings" placeholder="0">
+    </label>
+  </section>
+
+  <section class="sec">
+    <h2>Деньги <em>и чувства</em></h2>
+    <p class="hint">Здесь собираются ваши эмоциональные цепочки. Это не диагноз — просто наблюдение, с которого можно начать.</p>
+    <div id="emotions"></div>
+  </section>
+
+  <section class="sec">
+    <h2>Финансовое <em>здоровье</em></h2>
+    <p class="hint">Ориентиры примерные. Нажмите на показатель, чтобы узнать, что он значит.</p>
+    <div id="metrics"></div>
+  </section>
+
+  <section class="sec">
+    <h2>На что <em>обратить внимание</em></h2>
+    <div id="recs"></div>
+  </section>
+
+  <section class="sec">
+    <h2>Упражнение <em>на неделю</em></h2>
+    <p class="hint" style="font-size:14px;color:var(--ink)">Цифры за месяц — это общая картина. Чтобы увидеть, что на самом деле запускает траты, попробуйте неделю вести дневник денежных эмоций: после каждой заметной покупки записывайте, что купили, за сколько и что чувствовали до и после. В конце недели перечитайте — обычно становится видно, какие чувства чаще всего ведут к покупкам.</p>
+  </section>
+
+  <section class="sec">
+    <h2>Сохранить <em>карту</em></h2>
+    <p class="hint">Документ с вашими цифрами, цепочками чувств, наблюдениями и вопросами для размышления.</p>
+    <div class="btns">
+      <button class="btn btn-main" data-action="word">Скачать документ Word</button>
+      <button class="btn btn-ghost" data-action="pdf">Сохранить в PDF или распечатать</button>
+      <button class="btn btn-ghost" data-action="reset">Очистить все данные</button>
+    </div>
+  </section>
+
+  <section class="sec care">
+    <h2>Цифры — это <em>только половина</em></h2>
+    <p>Если о деньгах тревожно думать, траты случаются импульсивно или долги копятся снова и снова — у этого есть психологические причины. С ними можно работать.</p>
+    <div class="btns">
+      <a class="btn btn-main" href="https://psychologiulia.com/index.html#zapis">Записаться на встречу-знакомство</a>
+      <a class="btn btn-ghost" href="https://t.me/financespaceclub/1" target="_blank" rel="noopener">О финансах — клуб «Пространство» в Telegram</a>
+    </div>
+  </section>
+
+  <p class="foot">Данные никуда не отправляются: они хранятся только в браузере на вашем устройстве.<br>Расчёты примерные. Наблюдения о чувствах — повод задуматься, а не диагноз.</p>
+</div>
+
+<div class="ov hidden" id="ov">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <h2 id="sheetTitle">Что вы чувствуете?</h2>
+    <p class="for" id="sheetFor"></p>
+    <div class="chain" id="chain" aria-live="polite"></div>
+    <p class="steps">Выбирайте по порядку, до трёх чувств: что было до, во время и после. Можно выбрать и одно.</p>
+    <div id="chipGroups"></div>
+    <div class="row">
+      <button class="btn btn-ghost" data-action="emo-undo">Убрать последнее</button>
+      <button class="btn btn-main" data-action="emo-done">Готово</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "money-feelings-v1";
+
+  // Чувства: ключ, название, окраска (1 приятное, 0 нейтральное, -1 неприятное)
+  var EMO = [
+    ["radost","радость",1],["udov","удовольствие",1],["spok","спокойствие",1],["gord","гордость",1],
+    ["blag","благодарность",1],["obl","облегчение",1],["azart","азарт",1],["uver","уверенность",1],
+    ["bezr","безразличие",0],["skuka","скука",0],["ustal","усталость",0],["privych","привычка",0],
+    ["trev","тревога",-1],["strah","страх",-1],["vina","вина",-1],["styd","стыд",-1],
+    ["zlost","раздражение",-1],["grust","грусть",-1],["pust","пустота",-1],["zavist","зависть",-1],
+    ["sozh","сожаление",-1],["odin","одиночество",-1],["obida","обида",-1],["bessil","бессилие",-1]
+  ];
+  var E = {}; EMO.forEach(function(e){ E[e[0]] = {n:e[1], v:e[2]}; });
+
+  function defaults(){
+    var ex = function(id,name,ess){ return {id:id,name:name,amount:"",essential:ess,emo:[]}; };
+    return {
+      incomes:[{id:1,name:"Зарплата",amount:"",emo:[]}],
+      expenses:[
+        ex(11,"Жильё и коммуналка",true), ex(12,"Продукты",true), ex(13,"Транспорт",true),
+        ex(14,"Связь и интернет",true), ex(15,"Здоровье",true), ex(16,"Дети",true),
+        ex(17,"Одежда и обувь",false), ex(18,"Кафе и доставка",false), ex(19,"Маркетплейсы",false),
+        ex(20,"Развлечения и хобби",false), ex(21,"Красота и уход",false), ex(22,"Подарки",false),
+        ex(23,"Подписки",false), ex(24,"Прочее",false)
+      ],
+      loans:[],
+      savings:""
+    };
+  }
+
+  var S = defaults();
+  try { var raw = localStorage.getItem(KEY); if (raw) S = Object.assign(defaults(), JSON.parse(raw)); } catch(e){}
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
+
+  // ---------- helpers ----------
+  var uid = function(){ return Date.now() + Math.floor(Math.random()*1000); };
+  function num(v){ var n = parseFloat(String(v).replace(",", ".")); return isFinite(n) ? n : 0; }
+  function rub(n){ return Math.round(n).toLocaleString("ru-RU") + " ₽"; }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function sumAmt(a){ return a.reduce(function(s,x){ return s + num(x.amount); }, 0); }
+  function pct(x){ return Math.round(x) + "%"; }
+  function lvl(v, good, mid, higher){ return higher ? (v>=good?"ok":v>=mid?"mid":"bad") : (v<=good?"ok":v<=mid?"mid":"bad"); }
+  function chainText(ch){ return ch.map(function(k){ return E[k] ? E[k].n : k; }).join(" → "); }
+  function chainHTML(ch){
+    return ch.map(function(k,i){ var e = E[k]; if (!e) return ""; return (i ? '<span class="ar">→</span>' : '') + '<span class="dot v'+e.v+'"></span>' + e.n; }).join("");
+  }
+  function monthLong(off){
+    var d = new Date(); d.setDate(1); d.setMonth(d.getMonth()+off);
+    var m = ["январе","феврале","марте","апреле","мае","июне","июле","августе","сентябре","октябре","ноябре","декабре"];
+    return m[d.getMonth()] + " " + d.getFullYear();
+  }
+
+  // ---------- паттерны ----------
+  var PATTERNS = {
+    swing: {cls:"p-swing", title:"Качели",
+      about:"Сначала приятно, потом неприятно. Так часто выглядят импульсивные покупки: на короткое время они поднимают настроение, а затем приходят вина или сожаление.",
+      q:["Что происходило за час до покупки? Каким было настроение?","Какая мысль появилась сразу после: «зря», «не заслужил(а)», «опять»?","Что ещё могло бы дать ту же радость — без последующей вины?"]},
+    comfort: {cls:"p-comfort", title:"Тратить, чтобы стало легче",
+      about:"Трата начинается с неприятного чувства или скуки и приносит облегчение. Покупка здесь работает как способ успокоиться — это понятно, но обходится недёшево.",
+      q:["Какое чувство вы пытаетесь унять этой тратой?","Как ещё вы умеете заботиться о себе, когда тревожно, скучно или одиноко?","Сколько длится облегчение?"]},
+    heavy: {cls:"p-heavy", title:"Тяжёлые траты",
+      about:"Неприятно и до, и после. Часто так ощущаются обязательные платежи или траты «через силу» — когда платите, но внутри сопротивление.",
+      q:["Что именно здесь тяжелее: сама сумма или то, что она для вас значит?","Есть ли в этой трате что-то, что вы выбрали бы и сами?","Можно ли что-то изменить — сумму, способ оплаты, отношение?"]},
+    ok: {cls:"p-ok", title:"В согласии с собой",
+      about:"Приятно и до, и после. Эти траты не вызывают внутреннего конфликта — похоже, они совпадают с тем, что для вас действительно важно.",
+      q:["Что делает эти траты «своими»?","Можно ли перенести это ощущение на другие расходы?"]},
+    neutral: {cls:"p-neutral", title:"Нейтральные",
+      about:"Траты по привычке или без особых чувств. Иногда именно здесь незаметно уходят деньги — стоит изредка проверять, нужны ли они.",
+      q:["Если бы этой траты не было месяц, вы бы заметили?"]}
+  };
+  function classify(ch){
+    if (!ch || !ch.length) return null;
+    var f = E[ch[0]] ? E[ch[0]].v : 0, l = E[ch[ch.length-1]] ? E[ch[ch.length-1]].v : 0;
+    if (f > 0 && l < 0) return "swing";
+    if (f <= 0 && l > 0) return "comfort";
+    if (f < 0 && l < 0) return "heavy";
+    if (f > 0 && l > 0) return "ok";
+    if (f > 0 && l === 0) return "ok";
+    if (f === 0 && l < 0) return "heavy";
+    if (f < 0 && l === 0) return "heavy";
+    return "neutral";
+  }
+
+  // ---------- расчёт ----------
+  function simulate(loans, budget){
+    var ls = loans.map(function(l){ return {rate:l.rate,payment:l.payment,bal:l.balance}; });
+    var mins = ls.reduce(function(s,l){ return s+l.payment; },0), eff = Math.max(budget, mins), m = 0, interest = 0;
+    while (ls.some(function(l){ return l.bal > 0.5; }) && m < 600){
+      m++;
+      ls.forEach(function(l){ if (l.bal>0){ var i=l.bal*l.rate/1200; l.bal+=i; interest+=i; } });
+      var left = eff;
+      ls.forEach(function(l){ if (l.bal>0){ var p=Math.min(l.payment,l.bal,left); l.bal-=p; left-=p; } });
+      ls.filter(function(l){ return l.bal>0; }).sort(function(a,b){ return b.rate-a.rate; }).forEach(function(l){ if (left>0){ var p=Math.min(left,l.bal); l.bal-=p; left-=p; } });
+    }
+    return {months:m, interest:interest, stuck:m>=600};
+  }
+
+  function calc(){
+    var c = {};
+    c.income = sumAmt(S.incomes);
+    c.ess = sumAmt(S.expenses.filter(function(e){ return e.essential; }));
+    c.opt = sumAmt(S.expenses.filter(function(e){ return !e.essential; }));
+    c.loans = S.loans.map(function(l){ return {name:l.name, balance:num(l.balance), rate:num(l.rate), payment:num(l.payment), emo:l.emo||[]}; }).filter(function(l){ return l.balance>0 || l.payment>0; });
+    c.mins = c.loans.reduce(function(s,l){ return s+l.payment; },0);
+    c.debt = c.loans.reduce(function(s,l){ return s+l.balance; },0);
+    c.out = c.ess + c.opt + c.mins;
+    c.left = c.income - c.out;
+    c.hasIncome = c.income > 0;
+    c.savings = num(S.savings);
+    c.payoff = (c.loans.length && c.debt > 0 && c.hasIncome) ? simulate(c.loans.filter(function(l){ return l.balance>0; }), c.income - c.ess - c.opt) : null;
+
+    // чувства
+    var groups = {swing:{sum:0,items:[]},comfort:{sum:0,items:[]},heavy:{sum:0,items:[]},ok:{sum:0,items:[]},neutral:{sum:0,items:[]}};
+    var tagged = 0, freq = {};
+    S.expenses.forEach(function(e){
+      var p = classify(e.emo); if (!p) return;
+      groups[p].sum += num(e.amount); groups[p].items.push(e.name); tagged += num(e.amount);
+    });
+    [].concat(S.incomes, S.expenses, S.loans).forEach(function(x){
+      (x.emo||[]).forEach(function(k){ if (!freq[k]) freq[k] = {count:0, money:0}; freq[k].count++; freq[k].money += num(x.amount || x.payment); });
+    });
+    c.groups = groups; c.tagged = tagged; c.freq = freq;
+    c.incomeNeg = S.incomes.filter(function(i){ return (i.emo||[]).some(function(k){ return E[k] && E[k].v < 0; }); });
+    c.incomePos = S.incomes.filter(function(i){ return (i.emo||[]).length && (i.emo||[]).every(function(k){ return E[k] && E[k].v > 0; }); });
+    c.loanNeg = S.loans.filter(function(l){ return (l.emo||[]).some(function(k){ return ["styd","vina","strah","trev","bessil"].indexOf(k) >= 0; }); });
+    c.metrics = metrics(c);
+    return c;
+  }
+
+  function metrics(c){
+    if (!c.hasIncome) return [];
+    var I = c.income, out = [], leftP = c.left/I*100, need = c.ess + c.mins;
+    out.push({t:"Остаток в месяц", v:pct(leftP), l:lvl(leftP,20,10,true),
+      a:"Сколько процентов дохода остаётся после всех трат и платежей.",
+      n:"От 20% — хорошо, 10–20% — нормально, меньше 10% — любая неожиданная трата выбивает из равновесия."});
+    out.push({t:"Обязательные расходы", v:pct(c.ess/I*100), l:lvl(c.ess/I*100,50,70),
+      a:"Какая часть дохода уходит на жильё, еду, транспорт и другое необходимое.",
+      n:"До 50% — комфортно, 50–70% — напряжённо, больше 70% — свободы почти не остаётся."});
+    out.push({t:"Необязательные расходы", v:pct(c.opt/I*100), l:lvl(c.opt/I*100,30,40),
+      a:"Траты на желания: кафе, покупки, развлечения. Они нужны — вопрос в пропорции.",
+      n:"До 30% — в балансе, 30–40% — стоит присмотреться, больше 40% — желания заметно теснят остальное."});
+    if (c.mins > 0) out.push({t:"Долговая нагрузка (ПДН)", v:pct(c.mins/I*100), l:lvl(c.mins/I*100,30,50),
+      a:"Какая часть дохода уходит на платежи по кредитам. Этот показатель смотрят банки.",
+      n:"До 30% — спокойно, 30–50% — ощутимо, больше 50% — высокая нагрузка по меркам Банка России."});
+    out.push({t:"Финансовая подушка", v: need>0 ? (c.savings/need).toFixed(1).replace(".",",")+" мес." : "—", l: need>0 ? lvl(c.savings/need,3,1,true) : "mid",
+      a:"На сколько месяцев хватит накоплений на обязательные расходы и кредиты, если доход пропадёт.",
+      n:"От 3 месяцев — хорошо, 1–3 — минимум, меньше 1 — уязвимо."});
+    out.push({t:"Нужное / желания / остаток", v: Math.round(need/I*100)+" / "+Math.round(c.opt/I*100)+" / "+Math.round(leftP),
+      l: (need/I*100<=50 && leftP>=20) ? "ok" : leftP>=10 ? "mid" : "bad",
+      a:"Правило 50/30/20: обязательное вместе с кредитами, желания и то, что остаётся на накопления.",
+      n:"Ориентир — 50 / 30 / 20."});
+    return out;
+  }
+
+  function recommendations(c){
+    var r = [];
+    if (!c.hasIncome){
+      return [
+        "Начните с доходов и нескольких главных расходов — даже приблизительные цифры уже дают картину. Заполнить всё сразу не нужно.",
+        "Откройте выписку в приложении банка за прошлый месяц: по ней цифры будут точнее, чем по памяти. Обычно траты оказываются больше, чем кажется, — и это нормально.",
+        "Не забудьте то, что легко упустить: наличные, переводы близким, подписки и автоплатежи, покупки на маркетплейсах мелкими суммами.",
+        "Сейчас задача — заметить, а не исправить. Если во время заполнения хочется себя ругать, отметьте и это чувство: оно тоже часть картины.",
+        "Чувства в первую очередь стоит отметить у тех трат, о которых неприятно думать или которые хочется пропустить. Там обычно больше всего информации о себе."
+      ];
+    }
+    if (c.left < 0) r.push("Расходы больше доходов на " + rub(-c.left) + " в месяц. Разница, скорее всего, покрывается кредитками, займами или накоплениями. Это первое, что важно остановить — начните с необязательных трат.");
+    var need = c.ess + c.mins;
+    if (need > 0 && c.savings < need) r.push("Подушки меньше чем на месяц. Даже небольшая сумма «на всякий случай» снижает тревогу заметнее, чем кажется. Можно начать с 5–10% дохода.");
+    var g = c.groups;
+    if (g.swing.sum > 0) r.push("На «качели» — траты, после которых приходят вина или сожаление, — уходит " + rub(g.swing.sum) + " в месяц (" + g.swing.items.join(", ") + "). Попробуйте правило паузы: откладывать такие покупки на 24 часа.");
+    if (g.comfort.sum > 0) r.push("Через траты вы успокаиваете себя на " + rub(g.comfort.sum) + " в месяц. Стоит подумать, какие ещё способы поддержки у вас есть — и какие можно добавить.");
+    if (c.incomeNeg.length) r.push("С доходом «" + c.incomeNeg.map(function(i){ return i.name; }).join("», «") + "» связаны неприятные чувства. Иногда это мешает просить больше или спокойно распоряжаться деньгами — на это стоит обратить внимание.");
+    if (c.loanNeg.length) r.push("Кредиты вызывают стыд, страх или вину. Из-за этих чувств люди часто избегают банковских приложений и не знают точных сумм — а неизвестность пугает сильнее цифр.");
+    if (c.opt > 0 && c.left >= 0 && c.left/c.income < 0.1){
+      var top = S.expenses.filter(function(e){ return !e.essential && num(e.amount) > 0; }).sort(function(a,b){ return num(b.amount)-num(a.amount); })[0];
+      if (top) r.push("Самая большая необязательная статья — «" + top.name + "», " + rub(num(top.amount)) + ". Если сократить её на треть, в месяц останется на " + rub(num(top.amount)/3) + " больше.");
+    }
+    if (c.mins > 0 && c.mins/c.income > 0.5) r.push("На кредиты уходит больше половины дохода. Новые займы сейчас сделают положение тяжелее. При частичном досрочном погашении выбирайте сокращение срока.");
+    if (c.tagged === 0) r.push("Отметьте чувства хотя бы у нескольких расходов — особенно у тех, о которых неприятно думать. Так появятся наблюдения в разделе «Деньги и чувства».");
+    var general = [
+      "Попробуйте разложить деньги по разным счетам или «конвертам»: обязательное, желания, подушка. Когда у каждой суммы есть своё место, тратить спокойнее.",
+      "Откладывайте в день зарплаты, а не «что останется в конце месяца» — даже 5% дохода. Автоперевод на отдельный счёт снимает необходимость каждый раз решать.",
+      "Перед необязательной покупкой дороже заметной для вас суммы сделайте паузу в 24 часа. Если желание осталось — покупайте без вины.",
+      "Раз в неделю уделяйте деньгам 10–15 минут: посмотрите траты и отметьте, с какими чувствами они были. Короткие регулярные встречи с цифрами снижают тревогу лучше, чем редкие «большие разборы».",
+      "Возвращайтесь к этой карте раз в месяц и сравнивайте: что изменилось в цифрах и в чувствах."
+    ];
+    for (var gi = 0; r.length < 5 && gi < general.length; gi++) r.push(general[gi]);
+    return r;
+  }
+
+  // ---------- render inputs ----------
+  function emoBtn(list, x){
+    var ch = x.emo || [];
+    return '<button class="emo-btn'+(ch.length?' has':'')+'" data-action="emo" data-list="'+list+'" data-id="'+x.id+'" aria-label="Чувства: '+(ch.length?esc(chainText(ch)):'не отмечены')+'">'+
+      (ch.length ? chainHTML(ch) : '+ чувства') + '</button>';
+  }
+  function renderInputs(){
+    document.getElementById("incomes").innerHTML = S.incomes.map(function(i){
+      return '<div class="item"><div class="l1"><input class="nm" aria-label="Источник дохода" data-list="incomes" data-id="'+i.id+'" data-field="name" value="'+esc(i.name)+'">'+
+        '<input class="amt" inputmode="numeric" placeholder="0" aria-label="Сумма" data-list="incomes" data-id="'+i.id+'" data-field="amount" value="'+esc(i.amount)+'">'+
+        '<button class="btn btn-x" aria-label="Удалить" data-action="del" data-list="incomes" data-id="'+i.id+'">×</button></div>'+
+        '<div class="l2">'+emoBtn("incomes",i)+'</div></div>';
+    }).join("");
+    document.getElementById("expenses").innerHTML = S.expenses.map(function(e){
+      return '<div class="item"><div class="l1"><input class="nm" aria-label="Статья расходов" data-list="expenses" data-id="'+e.id+'" data-field="name" value="'+esc(e.name)+'">'+
+        '<input class="amt" inputmode="numeric" placeholder="0" aria-label="Сумма" data-list="expenses" data-id="'+e.id+'" data-field="amount" value="'+esc(e.amount)+'">'+
+        '<button class="btn btn-x" aria-label="Удалить" data-action="del" data-list="expenses" data-id="'+e.id+'">×</button></div>'+
+        '<div class="l2"><button class="tag '+(e.essential?'must':'opt')+'" data-action="tag" data-id="'+e.id+'">'+(e.essential?'нужно':'можно меньше')+'</button>'+emoBtn("expenses",e)+'</div></div>';
+    }).join("");
+    document.getElementById("loans").innerHTML = S.loans.length ? S.loans.map(function(l){
+      function f(field,label,mode){ return '<label class="f">'+label+'<input inputmode="'+mode+'" placeholder="0" data-list="loans" data-id="'+l.id+'" data-field="'+field+'" value="'+esc(l[field])+'"></label>'; }
+      return '<div class="item"><div class="l1"><input class="nm" aria-label="Название кредита" data-list="loans" data-id="'+l.id+'" data-field="name" value="'+esc(l.name)+'">'+
+        '<button class="btn btn-x" aria-label="Удалить" data-action="del" data-list="loans" data-id="'+l.id+'">×</button></div>'+
+        '<div class="loan-row">'+f("balance","Остаток, ₽","numeric")+f("rate","Ставка, %","decimal")+f("payment","Платёж, ₽","numeric")+'</div>'+
+        '<div class="l2" style="margin-top:8px">'+emoBtn("loans",l)+'</div></div>';
+    }).join("") : '';
+    document.getElementById("savings").value = S.savings;
+  }
+
+  // ---------- render outputs ----------
+  function renderOutputs(){
+    var c = calc();
+    var hero = document.getElementById("hero");
+    if (!c.hasIncome){
+      hero.innerHTML = '<p class="say">Куда уходят ваши деньги — <i>и с каким чувством?</i></p><p class="hint">Заполните доходы и хотя бы несколько расходов, и здесь появится ваша картина месяца.</p>';
+    } else {
+      var I = c.income, k = function(x){ return Math.max(0, Math.round(x/I*100)); };
+      var parts = [["нужное", c.ess, "var(--ink)"], ["желания", c.opt, "var(--mid)"], ["кредиты", c.mins, "var(--debt)"], ["остаётся", Math.max(c.left,0), "var(--free)"]];
+      var say = 'Из каждых 100 ₽ дохода <i>' + k(c.ess) + ' ₽</i> уходит на нужное, <i>' + k(c.opt) + ' ₽</i> — на желания' +
+        (c.mins > 0 ? ', <i>' + k(c.mins) + ' ₽</i> — на кредиты' : '') +
+        (c.left >= 0 ? ', а <i>' + k(c.left) + ' ₽</i> остаётся.' : '. Расходы больше дохода на <i>' + rub(-c.left) + '</i>.');
+      var tot = Math.max(I, c.out);
+      var strip = parts.map(function(p){ return p[1] > 0 ? '<span style="width:'+(p[1]/tot*100)+'%;background:'+p[2]+'" title="'+p[0]+'"></span>' : ''; }).join("");
+      var keys = parts.filter(function(p){ return p[1] > 0; }).map(function(p){ return '<span><i style="background:'+p[2]+'"></i>'+p[0]+' '+rub(p[1])+'</span>'; }).join("");
+      var h = '<p class="say">'+say+'</p><p class="strip-label">Деньги</p><div class="strip" role="img" aria-label="Распределение дохода">'+strip+'</div><div class="keys">'+keys+'</div>';
+      if (c.tagged > 0){
+        var order = [["ok","var(--free)"],["neutral","#B9A99C"],["comfort","var(--calm)"],["swing","var(--mid)"],["heavy","var(--debt)"]];
+        var expAll = c.ess + c.opt;
+        var es = order.map(function(o){ var s = c.groups[o[0]].sum; return s > 0 ? '<span style="width:'+(s/Math.max(expAll,c.tagged)*100)+'%;background:'+o[1]+'"></span>' : ''; }).join("");
+        var ek = order.filter(function(o){ return c.groups[o[0]].sum > 0; }).map(function(o){ return '<span><i style="background:'+o[1]+'"></i>'+PATTERNS[o[0]].title.toLowerCase()+'</span>'; }).join("");
+        h += '<p class="strip-label">Чувства в расходах</p><div class="strip" role="img" aria-label="Расходы по чувствам">'+es+'</div><div class="keys">'+ek+(expAll > c.tagged ? '<span><i style="background:var(--line)"></i>не отмечено</span>' : '')+'</div>';
+      }
+      hero.innerHTML = h;
+    }
+
+    document.getElementById("incomeTotal").textContent = rub(c.income);
+    document.getElementById("essTotal").textContent = rub(c.ess);
+    document.getElementById("optTotal").textContent = rub(c.opt);
+
+    var lm = document.getElementById("loanMsg");
+    if (c.payoff && !c.payoff.stuck) lm.innerHTML = '<div class="good">Если направлять на кредиты всё, что остаётся, вы закроете их примерно в '+monthLong(c.payoff.months)+'. Переплата по процентам — около '+rub(c.payoff.interest)+'.</div>';
+    else if (c.payoff && c.payoff.stuck) lm.innerHTML = '<div class="warn">Платежей не хватает, чтобы долг уменьшался. Проверьте цифры или обратитесь в банк за реструктуризацией.</div>';
+    else lm.innerHTML = '';
+
+    // чувства
+    var em = document.getElementById("emotions"), h2 = '';
+    var fk = Object.keys(c.freq).sort(function(a,b){ return c.freq[b].count - c.freq[a].count || c.freq[b].money - c.freq[a].money; }).slice(0,6);
+    if (!fk.length){
+      h2 = '<p class="hint" style="margin:0">Пока чувства не отмечены. Нажмите «+ чувства» рядом с любой суммой — например, с теми тратами, о которых не хочется думать.</p>';
+    } else {
+      h2 += '<h3>Чаще всего</h3><div class="freq">' + fk.map(function(k){ return '<span><span class="dot v'+E[k].v+'"></span>'+E[k].n+' ×'+c.freq[k].count+'</span>'; }).join("") + '</div>';
+      ["swing","comfort","heavy","ok","neutral"].forEach(function(key){
+        var g = c.groups[key]; if (!g.items.length) return;
+        var P = PATTERNS[key], share = c.ess + c.opt > 0 ? Math.round(g.sum/(c.ess+c.opt)*100) : 0;
+        h2 += '<div class="pat '+P.cls+'"><div class="ph"><h3>'+P.title+'</h3><span class="sum">'+rub(g.sum)+(share?' · '+share+'% расходов':'')+'</span></div>'+
+          '<div class="cats">'+g.items.map(esc).join(", ")+'</div><p>'+P.about+'</p>'+
+          '<ul>'+P.q.map(function(q){ return '<li>'+q+'</li>'; }).join("")+'</ul></div>';
+      });
+      if (c.incomeNeg.length) h2 += '<div class="pat p-heavy"><div class="ph"><h3>Получать непросто</h3></div><div class="cats">'+c.incomeNeg.map(function(i){ return esc(i.name)+': '+esc(chainText(i.emo)); }).join("; ")+'</div>'+
+        '<p>Деньги, которые приходят с тревогой, виной или стыдом, часто так же быстро и уходят — их сложно считать «своими».</p>'+
+        '<ul><li>Чей голос звучит, когда вы получаете эти деньги?</li><li>Что, по-вашему, нужно сделать, чтобы «заслужить» их?</li></ul></div>';
+      if (c.incomePos.length) h2 += '<div class="pat p-ok"><div class="ph"><h3>Доход как опора</h3></div><div class="cats">'+c.incomePos.map(function(i){ return esc(i.name); }).join(", ")+'</div>'+
+        '<p>С этим доходом связаны приятные чувства. Это хорошая точка опоры — стоит её замечать.</p></div>';
+      if (c.loanNeg.length) h2 += '<div class="pat p-heavy"><div class="ph"><h3>Долг и стыд</h3></div><div class="cats">'+c.loanNeg.map(function(l){ return esc(l.name)+': '+esc(chainText(l.emo)); }).join("; ")+'</div>'+
+        '<p>Стыд и страх из-за долгов — одни из самых тяжёлых денежных чувств. Они толкают к избеганию: не открывать приложение, не смотреть на сумму. Но точные цифры обычно пугают меньше, чем неизвестность.</p>'+
+        '<ul><li>Что вы говорите себе, когда думаете об этом долге?</li><li>Что бы вы сказали близкому человеку в такой же ситуации?</li></ul></div>';
+    }
+    em.innerHTML = h2;
+
+    document.getElementById("metrics").innerHTML = !c.hasIncome ? '<p class="hint" style="margin:0">Укажите доход, и здесь появятся показатели.</p>' :
+      c.metrics.map(function(m){ return '<details class="met '+m.l+'"><summary><span class="md" aria-hidden="true"></span><span class="mn">'+m.t+'</span><b>'+m.v+'</b></summary><p>'+m.a+'</p><p class="norm">'+m.n+'</p></details>'; }).join("");
+    document.getElementById("recs").innerHTML = '<ol class="recs">' + recommendations(c).map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("") + '</ol>';
+    return c;
+  }
+
+  // ---------- окно выбора чувств ----------
+  var cur = null, lastFocus = null;
+  var GROUPS = [["Приятные",1],["Нейтральные",0],["Неприятные",-1]];
+  document.getElementById("chipGroups").innerHTML = GROUPS.map(function(g){
+    return '<div class="grp">'+g[0]+'</div><div class="chips">'+EMO.filter(function(e){ return e[2]===g[1]; }).map(function(e){
+      return '<button class="chip" data-action="emo-add" data-key="'+e[0]+'"><span class="dot v'+e[2]+'"></span>'+e[1]+'</button>';
+    }).join("")+'</div>';
+  }).join("");
+  function findItem(list, id){ return S[list].filter(function(x){ return String(x.id) === String(id); })[0]; }
+  function drawChain(){
+    var it = findItem(cur.list, cur.id); if (!it) return;
+    document.getElementById("chain").innerHTML = it.emo && it.emo.length ? chainHTML(it.emo) : '<span class="ph">Например: радость → вина</span>';
+  }
+  function openSheet(list, id, btn){
+    var it = findItem(list, id); if (!it) return;
+    if (!it.emo) it.emo = [];
+    cur = {list:list, id:id}; lastFocus = btn;
+    document.getElementById("sheetFor").textContent = (list==="incomes"?"Доход":list==="loans"?"Кредит":"Расход") + ": " + (it.name || "без названия") + (num(it.amount||it.payment) ? ", " + rub(num(it.amount||it.payment)) : "");
+    drawChain();
+    document.getElementById("ov").classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    document.querySelector("#ov .sheet").scrollTop = 0;
+    var first = document.querySelector("#ov .chip"); if (first) first.focus({preventScroll:true});
+  }
+  function closeSheet(){
+    document.getElementById("ov").classList.add("hidden");
+    document.body.style.overflow = "";
+    save(); renderInputs(); renderOutputs();
+    if (cur){ var b = document.querySelector('.emo-btn[data-list="'+cur.list+'"][data-id="'+cur.id+'"]'); if (b) b.focus(); }
+    cur = null;
+  }
+
+  // ---------- документ ----------
+  function reportHTML(c, forWord){
+    var today = new Date().toLocaleDateString("ru-RU");
+    var css = 'body{font-family:Arial,sans-serif;font-size:11pt;color:#2F2622;line-height:1.45}h1{font-size:19pt;margin:0 0 4pt}h2{font-size:13pt;margin:16pt 0 6pt;color:#5F7D5A}h3{font-size:11.5pt;margin:10pt 0 3pt}table{border-collapse:collapse;width:100%;margin-bottom:8pt}th,td{border:1px solid #E0D3C5;padding:4pt 6pt;font-size:10pt;text-align:left;vertical-align:top}th{background:#F7EFE6}td.n{text-align:right;white-space:nowrap}.muted{color:#7A6A60;font-size:9.5pt}li{margin-bottom:3pt}';
+    function tbl(head, rows, numCol){ return '<table><tr>'+head.map(function(x){ return '<th>'+x+'</th>'; }).join("")+'</tr>'+rows.map(function(r){ return '<tr>'+r.map(function(v,i){ return '<td'+(i===numCol?' class="n"':'')+'>'+v+'</td>'; }).join("")+'</tr>'; }).join("")+'</table>'; }
+    var h = '<h1>Деньги и чувства: моя карта</h1><p class="muted">Составлено '+today+' на psychologiulia.com</p>';
+    if (c.hasIncome){
+      h += '<p>Доход: <b>'+rub(c.income)+'</b>. Обязательные расходы: '+rub(c.ess)+'. Необязательные: '+rub(c.opt)+'.'+(c.mins?' Платежи по кредитам: '+rub(c.mins)+'.':'')+' '+(c.left>=0?'Остаётся: <b>'+rub(c.left)+'</b>.':'Расходы больше дохода на <b>'+rub(-c.left)+'</b>.')+'</p>';
+    }
+    h += '<h2>Доходы</h2>' + tbl(["Источник","Сумма","Чувства"], S.incomes.filter(function(i){ return num(i.amount)>0 || (i.emo||[]).length; }).map(function(i){ return [esc(i.name), rub(num(i.amount)), esc(chainText(i.emo||[]))||"—"]; }), 1);
+    h += '<h2>Расходы</h2>' + tbl(["Статья","Тип","Сумма","Чувства"], S.expenses.filter(function(e){ return num(e.amount)>0 || (e.emo||[]).length; }).map(function(e){ return [esc(e.name), e.essential?"нужно":"можно меньше", rub(num(e.amount)), esc(chainText(e.emo||[]))||"—"]; }), 2);
+    if (c.loans.length) h += '<h2>Кредиты</h2>' + tbl(["Кредит","Остаток","Ставка","Платёж","Чувства"], S.loans.map(function(l){ return [esc(l.name), rub(num(l.balance)), String(l.rate).replace(".",",")+"%", rub(num(l.payment)), esc(chainText(l.emo||[]))||"—"]; }), -1);
+    h += '<p>Накопления: '+rub(c.savings)+'.</p>';
+    var any = false, ph = '';
+    ["swing","comfort","heavy","ok","neutral"].forEach(function(key){
+      var g = c.groups[key]; if (!g.items.length) return; any = true;
+      var P = PATTERNS[key];
+      ph += '<h3>'+P.title+' — '+rub(g.sum)+'</h3><p>'+g.items.map(esc).join(", ")+'</p><p>'+P.about+'</p><p><i>Вопросы для размышления:</i></p><ul>'+P.q.map(function(q){ return '<li>'+q+'</li>'; }).join("")+'</ul>';
+    });
+    if (any) h += '<h2>Деньги и чувства</h2>' + ph;
+    if (c.metrics.length) h += '<h2>Финансовые показатели</h2>' + tbl(["Показатель","Значение","Оценка"], c.metrics.map(function(m){ return [m.t, m.v, {ok:"хорошо",mid:"терпимо",bad:"требует внимания"}[m.l]]; }), -1);
+    h += '<h2>На что обратить внимание</h2><ol>' + recommendations(c).map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("") + '</ol>';
+    h += '<h2>Мои заметки</h2><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>';
+    h += '<p class="muted">Расчёты примерные. Наблюдения о чувствах — повод задуматься, а не диагноз. Если хочется разобраться глубже: psychologiulia.com. О финансах — клуб «Пространство»: t.me/financespaceclub</p>';
+    var head = forWord
+      ? '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Деньги и чувства</title><style>'+css+'</style></head><body>'
+      : '<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><title>Деньги и чувства</title><style>'+css+'@page{margin:15mm}</style></head><body>';
+    return head + h + '</body></html>';
+  }
+  function downloadWord(){
+    var blob = new Blob(["\ufeff", reportHTML(calc(), true)], {type:"application/msword"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "dengi-i-chuvstva.doc";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+  function printPDF(){
+    var fr = document.createElement("iframe");
+    fr.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0";
+    document.body.appendChild(fr);
+    var d = fr.contentWindow.document; d.open(); d.write(reportHTML(calc(), false)); d.close();
+    setTimeout(function(){ try { fr.contentWindow.focus(); fr.contentWindow.print(); } catch(e){ window.print(); } setTimeout(function(){ fr.remove(); }, 2000); }, 300);
+  }
+
+  // ---------- события ----------
+  document.addEventListener("input", function(e){
+    var t = e.target, ds = t.dataset;
+    if (ds.list && ds.field){
+      var it = findItem(ds.list, ds.id); if (!it) return;
+      var v = t.value;
+      if (["amount","balance","payment"].indexOf(ds.field) >= 0){ v = v.replace(/[^\d]/g,""); t.value = v; }
+      if (ds.field === "rate"){ v = v.replace(",",".").replace(/[^\d.]/g,""); t.value = v; }
+      it[ds.field] = v;
+    } else if (ds.key === "savings"){
+      S.savings = t.value.replace(/[^\d]/g,""); t.value = S.savings;
+    } else return;
+    save(); renderOutputs();
+  });
+
+  document.addEventListener("click", function(e){
+    if (e.target.id === "ov"){ closeSheet(); return; }
+    var t = e.target.closest("[data-action]"); if (!t) return;
+    var a = t.dataset.action, id = t.dataset.id, list = t.dataset.list;
+    if (a === "add"){
+      if (list === "incomes") S.incomes.push({id:uid(), name:"Другой доход", amount:"", emo:[]});
+      if (list === "expenses") S.expenses.push({id:uid(), name:"Новая статья", amount:"", essential:false, emo:[]});
+      if (list === "loans") S.loans.push({id:uid(), name:"Кредит " + (S.loans.length+1), balance:"", rate:"", payment:"", emo:[]});
+      save(); renderInputs(); renderOutputs();
+    } else if (a === "del"){
+      S[list] = S[list].filter(function(x){ return String(x.id) !== id; });
+      save(); renderInputs(); renderOutputs();
+    } else if (a === "tag"){
+      var it = findItem("expenses", id); if (it) it.essential = !it.essential;
+      save(); renderInputs(); renderOutputs();
+    } else if (a === "emo"){ openSheet(list, id, t);
+    } else if (a === "emo-add" && cur){
+      var x = findItem(cur.list, cur.id);
+      if (x.emo.length >= 3) x.emo[2] = t.dataset.key; else x.emo.push(t.dataset.key);
+      drawChain();
+    } else if (a === "emo-undo" && cur){
+      findItem(cur.list, cur.id).emo.pop(); drawChain();
+    } else if (a === "emo-done"){ closeSheet();
+    } else if (a === "word"){ downloadWord();
+    } else if (a === "pdf"){ printPDF();
+    } else if (a === "reset"){
+      if (confirm("Удалить все введённые данные?")){ S = defaults(); save(); renderInputs(); renderOutputs(); }
+    }
+  });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && cur) closeSheet(); });
+
+  renderInputs();
+  renderOutputs();
+})();
+</script>
+</body>
+</html>
